@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="在线刷题学习站首页">
+  <meta name="theme-color" content="#07111f">
+  <title>学习空间 · 首页</title>
+  <link rel="stylesheet" href="./home.css">
+</head>
+<body>
+  <canvas id="particleCanvas" class="particle-canvas" aria-hidden="true"></canvas>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="./index.html" aria-label="返回首页">
+      <span class="brand-mark">S</span>
+      <span>Study Space</span>
+    </a>
+    <nav class="nav-links" aria-label="主要导航">
+      <a class="active" href="./index.html">首页</a>
+      <a href="./practice.html">开始刷题</a>
+      <a href="./profile.html">个人信息</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero section-shell">
+      <div class="hero-copy reveal">
+        <span class="eyebrow">YOUR PERSONAL STUDY SPACE</span>
+        <h1>把每一次练习，<br><span>变成看得见的进步。</span></h1>
+        <p class="hero-description">
+          一个轻量、专注、无需登录的在线刷题空间。题库、错题、搜索、统计和限时练习都集中在这里，学习记录保存在你的浏览器中。
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="./practice.html">进入刷题页面 <span aria-hidden="true">→</span></a>
+          <a class="button ghost" href="./profile.html">查看个人信息</a>
+        </div>
+        <div class="hero-note">纯前端 · GitHub Pages 可直接部署 · 本地保存学习记录</div>
+      </div>
+
+      <div class="hero-visual reveal" aria-hidden="true">
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="glass-panel dashboard-card">
+          <div class="dashboard-top">
+            <span class="mini-dot"></span>
+            <span class="mini-dot"></span>
+            <span class="mini-dot"></span>
+          </div>
+          <div class="dashboard-title">TODAY'S PROGRESS</div>
+          <div class="progress-ring"><span>86%</span></div>
+          <div class="dashboard-bars">
+            <i style="--h:42%"></i><i style="--h:65%"></i><i style="--h:52%"></i><i style="--h:82%"></i><i style="--h:72%"></i><i style="--h:92%"></i><i style="--h:76%"></i>
+          </div>
+          <div class="dashboard-caption"><span>KEEP GOING</span><strong>+12 questions</strong></div>
+        </div>
+        <div class="floating-tag tag-one">错题本 ✓</div>
+        <div class="floating-tag tag-two">专注练习 45:00</div>
+      </div>
+    </section>
+
+    <section class="features section-shell" id="features">
+      <div class="section-heading reveal">
+        <span class="eyebrow">WHAT YOU CAN DO</span>
+        <h2>一个页面，覆盖日常刷题所需功能</h2>
+        <p>保留你现有刷题系统的完整能力，并用新的首页把入口和功能介绍组织得更清晰。</p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card reveal">
+          <span class="feature-number">01</span>
+          <div class="feature-icon">⌕</div>
+          <h3>题库切换与全文搜索</h3>
+          <p>快速切换不同题库，按题干、选项、来源和解析内容搜索目标题目。</p>
+        </article>
+        <article class="feature-card reveal">
+          <span class="feature-number">02</span>
+          <div class="feature-icon">✓</div>
+          <h3>答题判断与详细解析</h3>
+          <p>支持单选、多选，提交后立即判断答案，并显示正确答案与解析内容。</p>
+        </article>
+        <article class="feature-card reveal">
+          <span class="feature-number">03</span>
+          <div class="feature-icon">↻</div>
+          <h3>错题本与随机练习</h3>
+          <p>将薄弱题目加入错题本反复训练，也可以随时随机抽取一道题开始练习。</p>
+        </article>
+        <article class="feature-card reveal">
+          <span class="feature-number">04</span>
+          <div class="feature-icon">◷</div>
+          <h3>限时训练</h3>
+          <p>提供倒计时练习模式，在接近真实考试节奏的环境中训练答题效率。</p>
+        </article>
+        <article class="feature-card reveal">
+          <span class="feature-number">05</span>
+          <div class="feature-icon">↗</div>
+          <h3>学习统计</h3>
+          <p>自动统计已答、正确、正确率和错题数量，让当前学习状态一目了然。</p>
+        </article>
+        <article class="feature-card reveal">
+          <span class="feature-number">06</span>
+          <div class="feature-icon">⇄</div>
+          <h3>数据导入与导出</h3>
+          <p>支持自定义 JSON 题库，并可以导入、导出学习记录，方便备份与迁移。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="cta section-shell reveal">
+      <div>
+        <span class="eyebrow">READY TO START?</span>
+        <h2>今天也做几道题吧。</h2>
+        <p>刷题页面保持原有功能，只新增页面入口，不改变已有学习记录逻辑。</p>
+      </div>
+      <a class="button primary" href="./practice.html">立即开始刷题 <span aria-hidden="true">→</span></a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Study Space</span>
+    <span>Built for focused learning.</span>
+  </footer>
+
+  <script src="./home.js"></script>
+</body>
+</html>

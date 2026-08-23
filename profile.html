@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="个人信息页面">
+  <meta name="theme-color" content="#07111f">
+  <title>学习空间 · 个人信息</title>
+  <link rel="stylesheet" href="./home.css">
+</head>
+<body class="profile-page">
+  <canvas id="particleCanvas" class="particle-canvas" aria-hidden="true"></canvas>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="./index.html" aria-label="返回首页">
+      <span class="brand-mark">S</span>
+      <span>Study Space</span>
+    </a>
+    <nav class="nav-links" aria-label="主要导航">
+      <a href="./index.html">首页</a>
+      <a href="./practice.html">开始刷题</a>
+      <a class="active" href="./profile.html">个人信息</a>
+    </nav>
+  </header>
+
+  <main class="profile-main section-shell">
+    <section class="profile-intro reveal">
+      <span class="eyebrow">ABOUT ME</span>
+      <h1>个人信息</h1>
+      <p>这个页面已经为你的个人文字与图片预留好位置。后续只需要替换下方对应 HTML 内容和图片文件即可。</p>
+    </section>
+
+    <section class="profile-layout">
+      <article class="profile-image-card reveal">
+        <div class="image-frame">
+          <img src="./assets/profile-placeholder.svg" alt="个人图片占位图">
+        </div>
+        <div class="edit-hint">
+          <strong>图片区域</strong>
+          <span>替换 <code>assets/profile-placeholder.svg</code>，或修改本页 img 的 src。</span>
+        </div>
+      </article>
+
+      <article class="profile-text-card reveal">
+        <span class="profile-kicker">HELLO, THIS IS MY SPACE.</span>
+        <h2>这里以后可以写你的个人介绍</h2>
+        <p>
+          星河缓慢经过窗外，安静的文字在页面里留下属于自己的位置。这里暂时放入一些示例内容，方便你观察段落长度、行距和整体排版效果。
+        </p>
+        <p>
+          你可以在这里介绍自己、记录学习目标、写一段想说的话，也可以放课程信息、联系方式、GitHub 项目说明或者任何你希望访问者看到的内容。
+        </p>
+        <p>
+          后续修改时，直接打开 <code>profile.html</code>，找到带有 <code>profile-text-card</code> 的区域，把这些随机示例文字替换成你的内容即可。
+        </p>
+
+        <div class="profile-meta-grid">
+          <div><span>IDENTITY</span><strong>Student / Creator</strong></div>
+          <div><span>FOCUS</span><strong>Learning & Building</strong></div>
+          <div><span>STATUS</span><strong>Keep improving</strong></div>
+          <div><span>LINK</span><strong>Your link here</strong></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="profile-extra reveal">
+      <span class="eyebrow">YOUR CONTENT AREA</span>
+      <h2>还可以继续扩展</h2>
+      <p>如果以后想加入项目展示、时间线、联系方式、社交链接或更多图片，可以直接在这里继续添加新的区块。</p>
+      <div class="hero-actions">
+        <a class="button primary" href="./practice.html">前往刷题页面</a>
+        <a class="button ghost" href="./index.html">返回首页</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Study Space</span>
+    <span>Personal page placeholder.</span>
+  </footer>
+
+  <script src="./home.js"></script>
+</body>
+</html>
