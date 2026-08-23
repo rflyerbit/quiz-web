@@ -1,10 +1,29 @@
 (() => {
   "use strict";
 
-  const BUILTIN_BANKS = [
-    { id: "maogai", title: "毛泽东思想和中国特色社会主义理论体系概论", url: "./data/maogai.json" },
-    { id: "mayuan", title: "马克思主义基本原理", url: "./data/mayuan.json" }
-  ];
+ const BUILTIN_BANKS = [
+  {
+    id: "maogai",
+    title: "毛泽东思想和中国特色社会主义理论体系概论",
+    url: "./data/maogai.json"
+  },
+  {
+    id: "mayuan",
+    title: "马克思主义基本原理",
+    url: "./data/mayuan.json"
+  },
+  {
+    id: "jdstk",
+    title: "中国近现代史题库",
+    url: "./data/jdstk.json"
+  },
+  {
+    id: "funny_math",
+    title: "100以内加减乘除运算题库",
+    url: "./data/funny_math.json"
+  }
+];
+
 
   const STORAGE = {
     progress: "quiz_web_progress_v1",
