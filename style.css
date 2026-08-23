@@ -375,3 +375,189 @@ footer { text-align: center; color: var(--muted); padding: 1rem 1rem 2rem; }
   .topbar-actions #themeButton { grid-column: 1 / -1; }
   .page-link { width: 100%; }
 }
+/* =========================
+   题库管理弹窗
+   ========================= */
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.bank-manager-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.bank-manager-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+}
+
+.bank-manager-panel {
+  position: relative;
+  z-index: 1;
+
+  width: min(620px, 100%);
+  max-height: min(680px, 85vh);
+
+  overflow: hidden;
+
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.28);
+
+  display: flex;
+  flex-direction: column;
+}
+
+.bank-manager-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 1rem;
+
+  padding: 1.2rem 1.3rem;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.bank-manager-header h2 {
+  margin: 0;
+}
+
+.bank-manager-header p {
+  margin: .35rem 0 0;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+.bank-manager-close {
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 auto;
+
+  padding: 0;
+
+  border-radius: 50%;
+
+  font-size: 1.5rem;
+  line-height: 1;
+
+  background: var(--secondary);
+  color: var(--text);
+}
+
+.bank-manager-list {
+  display: grid;
+  gap: .7rem;
+
+  padding: 1rem 1.2rem 1.2rem;
+
+  overflow-y: auto;
+}
+
+.bank-manager-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 1rem;
+
+  padding: .9rem 1rem;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  background: var(--secondary);
+}
+
+.bank-manager-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: .25rem;
+}
+
+.bank-manager-info strong {
+  color: var(--text);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bank-manager-info span {
+  color: var(--muted);
+  font-size: .84rem;
+}
+
+.bank-manager-actions {
+  flex: 0 0 auto;
+}
+
+.bank-delete-button {
+  min-width: 72px;
+}
+
+.builtin-bank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: .35rem .65rem;
+
+  border-radius: 999px;
+
+  background: var(--card);
+  border: 1px solid var(--border);
+
+  color: var(--muted);
+  font-size: .8rem;
+  font-weight: 700;
+}
+
+.bank-manager-empty {
+  margin: 0;
+
+  padding: 2rem 1rem;
+
+  text-align: center;
+
+  color: var(--muted);
+}
+
+@media (max-width: 600px) {
+  .bank-manager-modal {
+    align-items: flex-end;
+    padding: .5rem;
+  }
+
+  .bank-manager-panel {
+    width: 100%;
+    max-height: 80vh;
+
+    border-radius: 18px 18px 12px 12px;
+  }
+
+  .bank-manager-item {
+    align-items: flex-start;
+  }
+
+  .bank-manager-info strong {
+    white-space: normal;
+  }
+}
