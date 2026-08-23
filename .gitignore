@@ -1,10 +1,9 @@
-# 编辑器与系统文件
+
 .idea/
 .vscode/
 .DS_Store
 Thumbs.db
 
-# Python 桌面版产物（不要上传到网页仓库）
 .venv/
 __pycache__/
 *.pyc
@@ -14,6 +13,5 @@ dist/
 *.exe
 *.lnk
 
-# 临时文件
 *.tmp
 *.log
