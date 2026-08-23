@@ -68,17 +68,22 @@
   }
 
   function cacheElements() {
-    [
-      "themeButton", "bankSelect", "practiceModeButton", "wrongModeButton",
-      "searchInput", "searchButton", "clearSearchButton", "searchResults", "randomButton",
-      "exam35Button", "exam60Button", "stopExamButton", "bankFileInput",
-      "exportProgressButton", "progressFileInput", "resetProgressButton",
-      "totalStat", "answeredStat", "correctStat", "accuracyStat", "wrongStat",
-      "timerStat", "modeBadge", "typeBadge", "progressText", "questionText",
-      "sourceText", "optionsForm", "resultPanel", "previousButton",
-      "submitButton", "nextButton", "toggleWrongButton", "statusMessage"
-    ].forEach(id => { el[id] = document.getElementById(id); });
-  }
+  [
+    "themeButton", "bankSelect", "practiceModeButton", "wrongModeButton",
+    "searchInput", "searchButton", "clearSearchButton", "searchResults", "randomButton",
+    "exam35Button", "exam60Button", "stopExamButton", "bankFileInput",
+    "manageBanksButton", "bankManagerModal", "bankManagerBackdrop",
+    "closeBankManagerButton", "bankManagerList",
+    "exportProgressButton", "progressFileInput", "resetProgressButton",
+    "totalStat", "answeredStat", "correctStat", "accuracyStat", "wrongStat",
+    "timerStat", "modeBadge", "typeBadge", "progressText", "questionText",
+    "sourceText", "optionsForm", "resultPanel", "previousButton",
+    "submitButton", "nextButton", "toggleWrongButton", "statusMessage"
+  ].forEach(id => {
+    el[id] = document.getElementById(id);
+  });
+}
+
 
   function bindEvents() {
     el.themeButton.addEventListener("click", toggleTheme);
@@ -106,11 +111,19 @@
     el.submitButton.addEventListener("click", submitAnswer);
     el.toggleWrongButton.addEventListener("click", toggleWrong);
     el.bankFileInput.addEventListener("change", importCustomBank);
+    el.manageBanksButton.addEventListener("click", openBankManager);
+    el.closeBankManagerButton.addEventListener("click", closeBankManager);
+    el.bankManagerBackdrop.addEventListener("click", closeBankManager);
     el.exportProgressButton.addEventListener("click", exportProgress);
     el.progressFileInput.addEventListener("change", importProgress);
     el.resetProgressButton.addEventListener("click", resetCurrentProgress);
-  }
 
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    closeBankManager();
+  }
+});
+  }
   async function loadBuiltInBanks() {
     const results = await Promise.all(BUILTIN_BANKS.map(async bank => {
       const response = await fetch(bank.url);
@@ -217,7 +230,6 @@
       questions = questions.filter(question => wrongSet.has(question.id));
     }
 
-    // 搜索只负责显示候选题目列表，不再缩减实际答题范围。
     state.visibleQuestions = questions;
 
     const wantedIndex = preferredId
@@ -670,6 +682,281 @@
       setStatus(`导入失败：${error.message}`, true);
     }
   }
+function openBankManager() {
+  renderBankManager();
+  el.bankManagerModal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+}
+
+function closeBankManager() {
+  if (!el.bankManagerModal) return;
+
+  el.bankManagerModal.classList.add("hidden");
+  document.body.classList.remove("modal-open");
+}
+
+function renderBankManager() {
+  el.bankManagerList.innerHTML = "";
+
+  const banks = [...state.banks.values()];
+
+  if (banks.length === 0) {
+    el.bankManagerList.innerHTML = `
+      <p class="bank-manager-empty">
+        当前没有可用题库。
+      </p>
+    `;
+    return;
+  }
+
+  banks.forEach(bank => {
+    const item = document.createElement("div");
+    item.className = "bank-manager-item";
+
+    const information = document.createElement("div");
+    information.className = "bank-manager-info";
+
+    const title = document.createElement("strong");
+    title.textContent = bank.title;
+
+    const detail = document.createElement("span");
+
+    if (bank.custom) {
+      detail.textContent = `自定义题库 · ${bank.questions.length} 题`;
+    } else {
+      detail.textContent = `内置题库 · ${bank.questions.length} 题`;
+    }
+
+    information.appendChild(title);
+    information.appendChild(detail);
+
+    const actions = document.createElement("div");
+    actions.className = "bank-manager-actions";
+
+    if (bank.custom) {
+      const deleteButton = document.createElement("button");
+
+      deleteButton.type = "button";
+      deleteButton.className = "danger bank-delete-button";
+      deleteButton.textContent = "删除";
+
+      deleteButton.addEventListener("click", () => {
+        deleteCustomBank(bank.id);
+      });
+
+      actions.appendChild(deleteButton);
+    } else {
+      const builtinBadge = document.createElement("span");
+      builtinBadge.className = "builtin-bank-badge";
+      builtinBadge.textContent = "内置";
+      actions.appendChild(builtinBadge);
+    }
+
+    item.appendChild(information);
+    item.appendChild(actions);
+
+    el.bankManagerList.appendChild(item);
+  });
+}
+function deleteCustomBank(bankId) {
+  const bank = state.banks.get(bankId);
+
+  if (!bank) {
+    setStatus("没有找到这个题库。", true);
+    return;
+  }
+
+  if (!bank.custom) {
+    setStatus("内置题库不能在这里删除。", true);
+    return;
+  }
+
+  const confirmed = window.confirm(
+    `确定要删除题库“${bank.title}”吗？\n\n删除后，该题库在当前浏览器中的数据将被移除。`
+  );
+
+  if (!confirmed) return;
+
+  const deletingCurrentBank = state.currentBankId === bankId;
+
+  state.banks.delete(bankId);
+
+  persistCustomBanks();
+
+  /*
+   * 删除这个题库对应的学习记录。
+   * 如果你不希望删除刷题记录，可以删除下面这一行。
+   */
+  removeBankProgress(bankId);
+
+  if (deletingCurrentBank) {
+    const firstBank = state.banks.values().next().value;
+
+    if (firstBank) {
+      state.currentBankId = firstBank.id;
+    }
+  }
+
+  refreshBankSelect(state.currentBankId);
+
+  state.mode = "all";
+  state.searchTerm = "";
+  state.searchResults = [];
+  state.index = 0;
+  state.submitted = false;
+
+  rebuildVisibleQuestions();
+  render();
+  renderBankManager();
+
+  setStatus(`已删除自定义题库：${bank.title}`);
+}
+function removeBankProgress(bankId) {
+  try {
+    const saved = JSON.parse(
+      localStorage.getItem(STORAGE.progress) || "{}"
+    );
+
+    if (
+      saved &&
+      typeof saved === "object" &&
+      Object.prototype.hasOwnProperty.call(saved, bankId)
+    ) {
+      delete saved[bankId];
+
+      localStorage.setItem(
+        STORAGE.progress,
+        JSON.stringify(saved)
+      );
+    }
+  } catch (error) {
+    console.warn("删除题库学习记录失败：", error);
+  }
+}
+function openBankManager() {
+  renderBankManager();
+  el.bankManagerModal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+}
+
+function closeBankManager() {
+  if (!el.bankManagerModal) return;
+
+  el.bankManagerModal.classList.add("hidden");
+  document.body.classList.remove("modal-open");
+}
+
+function renderBankManager() {
+  el.bankManagerList.innerHTML = "";
+
+  const banks = [...state.banks.values()];
+
+  if (banks.length === 0) {
+    el.bankManagerList.innerHTML = `
+      <p class="bank-manager-empty">
+        当前没有可用题库。
+      </p>
+    `;
+    return;
+  }
+
+  banks.forEach(bank => {
+    const item = document.createElement("div");
+    item.className = "bank-manager-item";
+
+    const information = document.createElement("div");
+    information.className = "bank-manager-info";
+
+    const title = document.createElement("strong");
+    title.textContent = bank.title;
+
+    const detail = document.createElement("span");
+
+    detail.textContent = bank.custom
+      ? `自定义题库 · ${bank.questions.length} 题`
+      : `内置题库 · ${bank.questions.length} 题`;
+
+    information.appendChild(title);
+    information.appendChild(detail);
+
+    const actions = document.createElement("div");
+    actions.className = "bank-manager-actions";
+
+    if (bank.custom) {
+      const deleteButton = document.createElement("button");
+
+      deleteButton.type = "button";
+      deleteButton.className = "danger bank-delete-button";
+      deleteButton.textContent = "删除";
+
+      deleteButton.addEventListener("click", () => {
+        deleteCustomBank(bank.id);
+      });
+
+      actions.appendChild(deleteButton);
+    } else {
+      const badge = document.createElement("span");
+      badge.className = "builtin-bank-badge";
+      badge.textContent = "内置";
+      actions.appendChild(badge);
+    }
+
+    item.appendChild(information);
+    item.appendChild(actions);
+
+    el.bankManagerList.appendChild(item);
+  });
+}
+
+function deleteCustomBank(bankId) {
+  const bank = state.banks.get(bankId);
+
+  if (!bank) {
+    setStatus("没有找到这个题库。", true);
+    return;
+  }
+
+  if (!bank.custom) {
+    setStatus("内置题库不能删除。", true);
+    return;
+  }
+
+  const confirmed = window.confirm(
+    `确定要删除题库“${bank.title}”吗？`
+  );
+
+  if (!confirmed) return;
+
+  const deletingCurrentBank =
+    state.currentBankId === bankId;
+
+  state.banks.delete(bankId);
+
+  persistCustomBanks();
+
+  if (deletingCurrentBank) {
+    const firstBank =
+      state.banks.values().next().value;
+
+    if (firstBank) {
+      state.currentBankId = firstBank.id;
+    }
+  }
+
+  refreshBankSelect(state.currentBankId);
+
+  state.mode = "all";
+  state.searchTerm = "";
+  state.searchResults = [];
+  state.index = 0;
+  state.submitted = false;
+
+  rebuildVisibleQuestions();
+  render();
+  renderBankManager();
+
+  setStatus(`已删除自定义题库：${bank.title}`);
+}
 
   function persistCustomBanks() {
     const customBanks = [...state.banks.values()]
