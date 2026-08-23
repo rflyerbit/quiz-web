@@ -37,7 +37,7 @@
       target.style.height = `${height}px`;
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const count = Math.max(28, Math.min(76, Math.floor(width / 22)));
+      const count = Math.max(50, Math.min(120, Math.floor(width / 15)));
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
