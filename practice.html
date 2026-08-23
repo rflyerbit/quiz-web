@@ -69,6 +69,11 @@
           导入自定义 JSON 题库
           <input id="bankFileInput" type="file" accept=".json,application/json">
         </label>
+        
+        <button id="manageBanksButton" class="secondary full" type="button">
+          管理题库
+        </button>
+
         <button id="exportProgressButton" class="secondary full" type="button">导出学习记录</button>
         <label class="file-button secondary-file">
           导入学习记录
@@ -112,6 +117,29 @@
       <p id="statusMessage" class="status" aria-live="polite"></p>
     </section>
   </main>
+<div id="bankManagerModal" class="bank-manager-modal hidden">
+  <div class="bank-manager-backdrop" id="bankManagerBackdrop"></div>
+
+  <div class="bank-manager-panel" role="dialog" aria-modal="true" aria-labelledby="bankManagerTitle">
+    <div class="bank-manager-header">
+      <div>
+        <h2 id="bankManagerTitle">管理题库</h2>
+        <p>可以查看当前题库，并删除自己导入的题库。</p>
+      </div>
+
+      <button
+        id="closeBankManagerButton"
+        class="bank-manager-close"
+        type="button"
+        aria-label="关闭"
+      >
+        ×
+      </button>
+    </div>
+
+    <div id="bankManagerList" class="bank-manager-list"></div>
+  </div>
+</div>
 
   <footer>
     数据仅保存在当前浏览器；请定期导出学习记录备份。
