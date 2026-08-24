@@ -2,6 +2,8 @@
 
 这是一个纯前端刷题网站。
 
+https://rflyerbit.github.io/quiz-web/
+
 ## 已包含功能
 
 - 毛概题库、近代史题库与马原题库切换
